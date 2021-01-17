@@ -1,12 +1,10 @@
-
-
 # jsonc-parser
 
 This package is a lightweight, zero-dependency module for parsing files with .jsonc extension. (<i>a.k.a. JSON with comments</i>)
 
 ## Installation
 
-To install this package, simply download it from [PyPI]():
+To install this package, simply download it from [PyPI](https://pypi.org/project/jsonc-parser):
 
     pip install jsonc-parser
 
@@ -68,4 +66,3 @@ There are a total of 3 custom exceptions that jsonc-parser can raise during its 
 -   **ParserError**
     <div id='exc-parser-error'></div>
     This exception indicates that file cannot be parsed. It can have wrong extension, invalid data, etc
-
