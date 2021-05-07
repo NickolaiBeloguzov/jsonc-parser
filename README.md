@@ -38,6 +38,22 @@ These are all methods that JsoncParser class provides for working with .jsonc fi
 
     This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if filepath parameter is not a string or is empty. Also this function will raise _[FileError](#exc-file-error)_ exception if file's format is unsupported and a _[ParserError](#exc-parser-error)_ exception if file cannot be parsed/contains invalid JSON data.
 
+-   ##### JsoncParser.parse_str(filepath: str) -> dict
+
+    This function parses string, specified in __string_ parameter, and deserializes it into a valid Python object (dictionary), removing any comment in the process.
+
+        from jsonc-parser.parser import JsoncParser
+
+        file_path = "./data.jsonc"
+        # Content from 'data.jsonc' -> {"version": "1.0.0", /*This is my project's version*/}
+
+        data = JsoncParser.parse_file(file_path)
+
+        print(data)
+        # Output: {'version': '1.0.0'}
+
+    This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if __string_ parameter is not a string or is empty. Also this function will raise a _[ParserError](#exc-parser-error)_ exception if file cannot be parsed/contains invalid JSON data.
+
 -   ##### JsoncParser.convert_to_json(filepath: str, remove_file: bool = False) -> None
 
     This function converts file from .jsonc to .json format, removing any comments in the process. _filepath_ parameter specifies path to file and _remove_file_ parameter specifies if .jsonc file will be removed (deleted from hard drive) after conversion. If set to True, this function will delete .jsonc file leaving only .json file. Otherwise, both files are not deleted.

@@ -5,12 +5,47 @@ import os
 
 
 class JsoncParser:
-    def __init__(self) -> None:
-        pass
 
     # regex = re.compile(r"//.*?\n|/\*.*?\*/", re.MULTILINE | re.DOTALL)
     regex = re.compile(r"(\".*?\"|\'.*?\')|(/\*.*?\*/|//[^\r\n]*$)", re.MULTILINE | re.DOTALL)
     newline_replace_regex = re.compile("\n{2,}", re.MULTILINE)
+
+    def parse_str(_string: str) -> dict:
+        """
+        Parse JSON-as-string and deserialize its content into Python dictionary,
+        ignoring any comments.
+
+        Parameters: `_string:str` - path to file
+
+        This function will raise a `FunctionParameterError` exception if `_string` parameter
+        has an incorrect type or is empty.
+        This function will raise a `ParserError` exception if file cannot be parsed.
+        This function will raise any additional exceptions if occurred.
+        """
+
+        def __re_sub(match):
+            if match.group(2) is not None:
+                return ""
+            else:
+                return match.group(1)
+
+        if type(_string) != str:
+            raise FunctionParameterError(
+                "_string parameter must be str; got {} instead".format(type(_string).__name__)
+            )
+
+        if not _string:
+            raise FunctionParameterError("there is not JSONC to be parsed")
+
+        json_file = open(_string, "r")
+        data_raw = json_file.read()
+        json_file.close()
+
+        try:
+            data = JsoncParser.regex.sub(__re_sub, data_raw)
+            return json.loads(JsoncParser.regex.sub(__re_sub, data))
+        except Exception as e:
+            raise ParserError("{} file cannot be parsed (message: {})".format(_string, str(e)))
 
     @staticmethod
     def parse_file(filepath: str) -> dict:

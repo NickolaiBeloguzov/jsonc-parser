@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as docs:
 
 setup(
     name="jsonc-parser",
-    version="1.0.0",
+    version="1.1.0",
     author="Nickolai Beloguzov",
     author_email="nickolai.beloguzov@gmail.com",
     description="A lightweight, native tool for parsing .jsonc files",
@@ -17,6 +17,7 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
@@ -26,5 +27,5 @@ setup(
         "Intended Audience :: Developers",
         "Natural Language :: English",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.5",
 )
