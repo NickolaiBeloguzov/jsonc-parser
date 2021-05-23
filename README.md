@@ -22,50 +22,47 @@ This class requires no instance to function (i.e. it is fully static)
 
 These are all methods that JsoncParser class provides for working with .jsonc files:
 
--   ##### JsoncParser.parse_file(filepath: str) -> dict
+-   ##### JsoncParser.parse_file(filepath: PathLike) -> dict
 
     This function parses file, specified in _filepath_ parameter, and deserializes it into a valid Python object (dictionary), removing any comment in the process. No alterations are made it the file itself. _filepath_ parameter specifies path to .jsonc file.
 
         from jsonc-parser.parser import JsoncParser
 
         file_path = "./data.jsonc"
-        # Content from 'data.jsonc' -> {"version": "1.0.0", /*This is my project's version*/}
+        # Content from 'data.jsonc' -> {"version": "1.0.0" /*This is my project's version*/}
 
         data = JsoncParser.parse_file(file_path)
 
         print(data)
         # Output: {'version': '1.0.0'}
 
-    This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if filepath parameter is not a string or is empty. Also this function will raise _[FileError](#exc-file-error)_ exception if file's format is unsupported and a _[ParserError](#exc-parser-error)_ exception if file cannot be parsed/contains invalid JSON data.
+    This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if filepath parameter is not a path-like object (str, bytes object representing a path, or os.PathLike compliant) or is empty. Also this function will raise _[FileError](#exc-file-error)_ exception if file's format is unsupported and a _[ParserError](#exc-parser-error)_ exception if file cannot be parsed/contains invalid JSON data.
 
--   ##### JsoncParser.parse_str(filepath: str) -> dict
+-   ##### JsoncParser.parse_str(_string: str) -> dict
 
     This function parses string, specified in __string_ parameter, and deserializes it into a valid Python object (dictionary), removing any comment in the process.
 
         from jsonc-parser.parser import JsoncParser
 
-        file_path = "./data.jsonc"
-        # Content from 'data.jsonc' -> {"version": "1.0.0", /*This is my project's version*/}
+        json_string = """{"version": "1.0.0" /*This is my project's version*/}"""
 
-        data = JsoncParser.parse_file(file_path)
+        data = JsoncParser.parse_str(json_string)
 
         print(data)
         # Output: {'version': '1.0.0'}
 
     This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if __string_ parameter is not a string or is empty. Also this function will raise a _[ParserError](#exc-parser-error)_ exception if file cannot be parsed/contains invalid JSON data.
 
--   ##### JsoncParser.convert_to_json(filepath: str, remove_file: bool = False) -> None
+    ##### JsoncParser.convert_to_json(filepath: PathLike, remove_file: bool = False) -> None
+    This function converts file from .jsonc to .json format, removing any comments in the process. filepath parameter specifies path to file and remove_file parameter specifies if .jsonc file will be removed (deleted from hard drive) after conversion. If set to True, this function will delete .jsonc file leaving only .json file. Otherwise, both files are not deleted. This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if _filepath_ parameter is not a path-like object or is empty or if _remove_file_ parameter is not a boolean.
 
-    This function converts file from .jsonc to .json format, removing any comments in the process. _filepath_ parameter specifies path to file and _remove_file_ parameter specifies if .jsonc file will be removed (deleted from hard drive) after conversion. If set to True, this function will delete .jsonc file leaving only .json file. Otherwise, both files are not deleted.
-    This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if _filepath_ parameter is not a string or is empty or if _remove_file_ parameter is not a boolean.
-
--   ##### JsoncParser.convert_to_jsonc(filepath: str, remove_file: bool = False) -> None
+-   ##### JsoncParser.convert_to_jsonc(filepath: PathLike, remove_file: bool = False) -> None
     This function converts file from .json to .jsonc format, enabling comment support. filepath parameter specifies path to file and _remove_file_ parameter specifies if .jsonc file will be removed (deleted from hard drive) after conversion. If set to True, this function will delete .jsonc file leaving only .json file. Otherwise, both files are not deleted.
-    This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if _filepath_ parameter is not a string or is empty or if _remove_file_ parameter is not a boolean.
+    This function can raise _[FunctionParameterError](#exc-function-parameter-error)_ if _filepath_ parameter is not a path-like object or is empty or if _remove_file_ parameter is not a boolean.
 
 ## Exceptions
 
-There are a total of 3 custom exceptions that jsonc-parser can raise during its runtime. To access the in your script, simply imprt thef from class='exc-code'>jsonc_parser.errors module:
+There are a total of 3 custom exceptions that jsonc-parser can raise during its runtime. To access the in your script, simply import them from jsonc_parser.errors module:
 
     from jsonc_parser.errors import FileError, IncorrectParameterError, ParserError
 
@@ -77,8 +74,8 @@ There are a total of 3 custom exceptions that jsonc-parser can raise during its 
 
 -   **FunctionParameterError**
     <div id='exc-function-parameter-error'></div>
-    This exception indicates that some of function's parameters are invalid. They may have wrong type, have invalid values or be errorous in some other way.
+    This exception indicates that some of function's parameters are invalid. They may have wrong type, have invalid values or be erroneous in some other way.
 
 -   **ParserError**
     <div id='exc-parser-error'></div>
-    This exception indicates that file cannot be parsed. It can have wrong extension, invalid data, etc
+    This exception indicates that file cannot be parsed. It can have wrong extension, invalid data, etc.
