@@ -2,6 +2,7 @@ import json
 import re
 from jsonc_parser.errors import FileError, FunctionParameterError, ParserError
 import os
+from typing import Union
 
 
 class JsoncParser:
@@ -19,7 +20,7 @@ class JsoncParser:
 
         This function will raise a `FunctionParameterError` exception if `_string` parameter
         has an incorrect type or is empty.
-        This function will raise a `ParserError` exception if file cannot be parsed.
+        This function will raise a `ParserError` exception if the string cannot be parsed.
         This function will raise any additional exceptions if occurred.
         """
 
@@ -34,26 +35,19 @@ class JsoncParser:
                 "_string parameter must be str; got {} instead".format(type(_string).__name__)
             )
 
-        if not _string:
-            raise FunctionParameterError("there is not JSONC to be parsed")
-
-        json_file = open(_string, "r")
-        data_raw = json_file.read()
-        json_file.close()
-
         try:
-            data = JsoncParser.regex.sub(__re_sub, data_raw)
+            data = JsoncParser.regex.sub(__re_sub, _string)
             return json.loads(JsoncParser.regex.sub(__re_sub, data))
         except Exception as e:
             raise ParserError("{} file cannot be parsed (message: {})".format(_string, str(e)))
 
     @staticmethod
-    def parse_file(filepath: str) -> dict:
+    def parse_file(filepath: Union[str, os.PathLike]) -> dict:
         """
         Parse .jsonc file and deserialize its content into Python dictionary,
         ignoring any comments.
 
-        Parameters: `filepath:str` - path to file
+        Parameters: `filepath: str | os.PathLike` - path to file
 
         This function will raise a `FunctionParameterError` exception if `filepath` parameter
         has an incorrect type or is empty.
@@ -67,10 +61,13 @@ class JsoncParser:
                 return ""
             else:
                 return match.group(1)
-
-        if type(filepath) != str:
+        
+        # verify that provided path is a valid path-like object
+        try:
+            filepath = os.fspath(filepath)
+        except TypeError:
             raise FunctionParameterError(
-                "filepath parameter must be str; got {} instead".format(type(filepath).__name__)
+                "filepath parameter must be path-like; got {} instead".format(type(path).__name__)
             )
 
         if not filepath:
@@ -93,13 +90,13 @@ class JsoncParser:
             raise ParserError("{} file cannot be parsed (message: {})".format(filepath, str(e)))
 
     @staticmethod
-    def convert_to_json(filepath: str, remove_file: bool = False) -> None:
+    def convert_to_json(filepath: Union[str, os.PathLike], remove_file: bool = False) -> None:
         """
         Convert file from .jsonc to .json format, removing any comments from it
 
-        Parameters: `filepath:str` is a path to file, `remove_file:bool` indicates if source file
-        will be deleted or not. If set to True, .jsonc file will be deleted from the hard drive,
-        otherwise file remains alongside with its .json output.
+        Parameters: `path: str | os.PathLike` is a path to file, `remove_file:bool` indicates if
+        source file will be deleted or not. If set to True, .jsonc file will be deleted from the
+        hard drive, otherwise file remains alongside with its .json output.
 
         This function will raise a `FunctionParameterError` if one or more of function's parameters
         has an incorrect type/invalid value.
@@ -107,9 +104,12 @@ class JsoncParser:
 
         """
 
-        if type(filepath) != str:
+        # verify that provided path is a valid path-like object
+        try:
+            filepath = os.fspath(filepath)
+        except TypeError:
             raise FunctionParameterError(
-                "filepath parameter must be str; got {} instead".format(type(filepath).__name__)
+                "filepath parameter must be path-like; got {} instead".format(type(path).__name__)
             )
 
         if not filepath:
@@ -136,21 +136,24 @@ class JsoncParser:
         json_file.close()
 
     @staticmethod
-    def convert_to_jsonc(filepath: str, remove_file: bool = False):
+    def convert_to_jsonc(filepath: Union[str, os.PathLike], remove_file: bool = False):
         """
         Convert file .jsonc format, enabling comments.
 
-        Parameters: `filepath:str` is a path to file, `remove_file:bool` indicates if source file
-        will be deleted or not. If set to True, .json file will be deleted from the hard drive,
-        otherwise file remains alongside with its .jsonc output.
+        Parameters: `filepath: str | os.PathLike` is a path to file, `remove_file:bool` indicates
+        if source file will be deleted or not. If set to True, .json file will be deleted from the
+        hard drive, otherwise file remains alongside with its .jsonc output.
 
         This function will raise a `FunctionParameterError` if one or more of function's parameters
         has an incorrect type/invalid value.
         This function will raise any additional exceptions if occurred.
         """
-        if type(filepath) != str:
+        # verify that provided path is a valid path-like object
+        try:
+            filepath = os.fspath(filepath)
+        except TypeError:
             raise FunctionParameterError(
-                "filepath parameter must be str; got {} instead".format(type(filepath).__name__)
+                "filepath parameter must be path-like; got {} instead".format(type(path).__name__)
             )
 
         if not filepath:
