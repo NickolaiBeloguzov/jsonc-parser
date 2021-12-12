@@ -67,7 +67,7 @@ class JsoncParser:
             filepath = os.fspath(filepath)
         except TypeError:
             raise FunctionParameterError(
-                "filepath parameter must be path-like; got {} instead".format(type(path).__name__)
+                "filepath parameter must be path-like; got {} instead".format(type(filepath).__name__)
             )
 
         if not filepath:
@@ -109,7 +109,7 @@ class JsoncParser:
             filepath = os.fspath(filepath)
         except TypeError:
             raise FunctionParameterError(
-                "filepath parameter must be path-like; got {} instead".format(type(path).__name__)
+                "filepath parameter must be path-like; got {} instead".format(type(filepath).__name__)
             )
 
         if not filepath:
@@ -153,7 +153,7 @@ class JsoncParser:
             filepath = os.fspath(filepath)
         except TypeError:
             raise FunctionParameterError(
-                "filepath parameter must be path-like; got {} instead".format(type(path).__name__)
+                "filepath parameter must be path-like; got {} instead".format(type(filepath).__name__)
             )
 
         if not filepath:
