@@ -26,7 +26,7 @@ These are all methods that JsoncParser class provides for working with .jsonc fi
 
     This function parses file, specified in _filepath_ parameter, and deserializes it into a valid Python object (dictionary), removing any comment in the process. No alterations are made it the file itself. _filepath_ parameter specifies path to .jsonc file.
 
-        from jsonc-parser.parser import JsoncParser
+        from jsonc_parser.parser import JsoncParser
 
         file_path = "./data.jsonc"
         # Content from 'data.jsonc' -> {"version": "1.0.0" /*This is my project's version*/}
@@ -42,7 +42,7 @@ These are all methods that JsoncParser class provides for working with .jsonc fi
 
     This function parses string, specified in __string_ parameter, and deserializes it into a valid Python object (dictionary), removing any comment in the process.
 
-        from jsonc-parser.parser import JsoncParser
+        from jsonc_parser.parser import JsoncParser
 
         json_string = """{"version": "1.0.0" /*This is my project's version*/}"""
 
